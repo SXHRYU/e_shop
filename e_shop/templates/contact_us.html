@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block cnt %}
+
+<table style="padding-left: 15%; padding-right: 25%; margin-top: 50px;">
+    <tr>
+        <td style="width:302px" id="form">
+            {% include 'includes/form.html' %}
+        </td>
+        <td id="qck" style="vertical-align: text-top;">
+            <p style="font-size: 50px; 
+                padding-left: 20%; 
+                margin-top: 0px;">Quick fixes</p>
+            <p class="qck_p"><a href="#">Loss of an instrument?</a></p>
+            <p class="qck_p2">File lost instrument form.</p>
+                      <hr> 
+            <p class="qck_p"><a href="">Defective tool?</a></p>
+            <p class="qck_p2">File form for defective tool.</p>
+                      <hr>
+            <p class="qck_p"><a href="">Want to become our partner?</a></p>
+            <p class="qck_p2">For business inquiries.</p>
+                       <hr>
+            <p class="qck_p"><a href="">Shipping outside of Russia?</a> </p>        
+            <p class="qck_p2">International shipping.</p>
+        </td>
+    </tr>
+</table>
+{% endblock cnt %}
+

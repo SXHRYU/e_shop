@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    {% if wrong_credentials %}
+        <h3>You have to login to make purchases!</h3>
+    {% endif %}
+    <form action="{% url 'products-detail' product.id %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        {% comment %}
+            All these '<input type="hidden">' were needed because this was the initial idea behind adding items to car --
+            to get the items using their title, description, etc., which was dropped in favour of adding the URL
+            to the 'request.session' middleware. But as a remainder I left it here. In the future it probs will be 
+            refactored.
+        {% endcomment %}
+        <input type="hidden" name="product-title" value="{{ title }}"><p><b> Title: </b> {{ title }} </p>
+        <input type="hidden" name="product-description" value="{{ description }}"><p><b> Description: </b> {{ description }} </p>
+        <input type="hidden" name="product-category" value="{{ category }}"><p><b> Category: </b> {{ category }} </p>
+        <input type="hidden" name="product-maker" value="{{ maker }}"><p><b> Maker: </b> {{ maker }} </p>
+        <input type="hidden" name="product-price" value="{{ price }}"><p><b> Price: </b> {{ price }} RUB </p>
+        <input type="hidden" name="product-country" value="{{ country_of_origin }}"><p><b> Country Of Origin: </b> {{ country_of_origin }} </p>            
+        {% if user.is_authenticated %}
+            <input type="submit" onclick="window.alert('Added \'{{ title }}\' to the cart')" value="Add to Cart">
+        {% else %}
+            <input type="submit" value="Add to Cart">
+        {% endif %}
+        
+    </form>
+    <a href="{% url 'products-all' %}"><button>All Products</button></a>
+    {% comment %} 
+        This is why we added 'workers_username' to context. If the user is worker or superuser
+        he will have 2 extra buttons to update or delete product
+    {% endcomment %}
+    {% if user.username in workers_username or user.is_superuser %}
+        <a href="{% url 'products-update' product.id %}"><button style='margin-left: 15px'>Edit</button></a>
+        <a href="{% url 'products-delete' product.id %}"><button style='margin-left: 15px'>Delete</button></a>
+    {% endif %}
+{% endblock cnt %}

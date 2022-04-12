@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <div style="border: 1px solid black; display: inline-block; padding: 1%;">
+        <h2>Contact Us</h2>
+        <p>Fill out the form if You have any questions or ideas for our shop!</p>
+    </div>
+    <form action="{% url 'contacts-main' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" onclick="window.alert('Your email (if the form was valid) went to the console! Beware.');" 
+            value="Send Message" id="submit-button">Send Message</button>
+    </form>
+{% endblock cnt %}

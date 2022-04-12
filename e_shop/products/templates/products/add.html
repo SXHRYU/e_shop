@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <h4>Add product to DB</h4>
+        
+    <form action="{% url 'products-add' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <input type="submit" value="Send To Server">
+    </form>
+{% endblock cnt %}

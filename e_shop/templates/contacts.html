@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block cnt %}
+    <table style="margin-top: 50px;">
+        <tr>
+            <td style="vertical-align: top;">
+                    <p style="text-align: center; margin-top: 0;">Здесь могла бы быть Ваша реклама! <br style="display: block; content: ''; margin-bottom: 15px; ">
+                        <a href="https://vk.com/"><img src="{% static 'img/vk.png' %}" alt="vk logo" width="50px"></a> <br>
+                        <a href="https://t.me/"><img src="{% static 'img/telegram.png' %}" alt="telegram logo" width="50px"></a> <br>
+                        <a href="https://instagram.com/"><img src="{% static 'img/instagram.png' %}" alt="instagram logo" width="50px"></a> <br>
+                        <a href="https://www.whatsapp.com/"><img src="{% static 'img/whatsapp.png' %}" alt="whatsapp logo" width="50px"></a> <br>
+                        
+                    </p>    
+            </td>
+            <td>
+                <iframe style="display: block; margin: 0 auto" src="https://yandex.ru/map-widget/v1/?um=constructor%3A6464fd5b4d05a1409f31e9e94a3c3c4dde94f47abb63254fa21d0f94c831812c&amp;source=constructor" 
+                width="400" height="400" frameborder="0">
+                </iframe>
+            </td>
+        </tr>
+    </table>
+{% endblock cnt %}

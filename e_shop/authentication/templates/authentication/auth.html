@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    {% if user.is_authenticated %}
+        <h1>YOU'RE LOGGED IN!</h1>
+        <form action= {% url 'auth-logout' %}>
+            <input type="submit" value="Logout" style="font-size: 20px;"/>
+        </form>
+    {% else %}
+
+        {% if wrong_credentials %}
+            <h3>Wrong username or password! Try again.</h3>
+        {% endif %}
+
+        <form method="POST" style="display: inline;">
+            {% csrf_token %}
+            <p>Enter Your username:</p>
+                <input type="text" name="username"> <br style="margin-top: 10px; display: block; content: ' '">
+            <p>Enter Your password:</p>
+                <input type="password" name="password"> <br style="margin-top: 10px; display: block; content: ' '">
+            <input type="submit" value="Login" style="margin-right: 10px;">
+        </form>
+        <a href="{% url 'profiles-create' %}"><button>Create Account</button></a>
+    {% endif %}
+{% endblock cnt %}

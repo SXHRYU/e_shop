@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block cnt %}
+    <br>
+    <form method="post" style="display: inline;">
+        {% csrf_token %}
+        <h3>Are You sure you want to delete Your account?</h3>
+        <h3>This action is irreversible!</h3>
+            <ul>
+                <li>id:          {{ user.id }}          </li>
+                <li>First Name:  {{ user.first_name }}  </li>
+                <li>Last Name:   {{ user.last_name }}   </li>
+                <li>Email:       {{ user.email }}       </li>
+                <li>Username:    {{ user.username }}    </li>
+                <li>Date Joined: {{ user.date_joined }} </li>
+            </ul> 
+            <input type="submit" value="Yes">
+    </form>
+    <a href="{% url 'profiles-detail' user.id %}"><button>No</button></a>
+{% endblock cnt %}

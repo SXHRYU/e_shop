@@ -1,0 +1,20 @@
+<div id="navbar-margin-wrapper" style="margin-top: 50px;">
+    <div id="all_links" style="display: inline; border: 2px solid black; padding: 1%; ">
+        {% if user.is_authenticated %}
+            <a href="{% url 'auth-login' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'auth-login' %}">Login</a>
+        {% endif %}
+        <a href="{% url 'products-add' %}">Add</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'profiles-detail' user.id %}">Profile</a>
+        {% endif %}
+        {% if user.is_superuser %}
+            <a href="http://127.0.0.1:8000/admin/">admin</a>
+        {% endif %}
+        <a href="{% url 'contacts-main' %}">contact us</a>
+        <a href="{% url 'products-all' %}">all</a>
+        <a href="{% url 'products-filter' %}">filter</a>
+        <a href="{% url 'cart-main' %}">Cart</a>
+    </div>
+</div>

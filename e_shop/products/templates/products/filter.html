@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <form action="{% url 'products-filter' %}" method="GET">
+        {{ form.as_p }}
+        <input type="submit" value="Filter">
+    </form>
+     <br>
+        <a href="{% url 'products-filter' %}"><input type="submit" value="Reset"></a>
+        <a href="{% url 'products-all' %}"><input type="submit" value="All Products"></a>
+    
+    {% if displayed_products.first is None and request.path != request.get_full_path %}
+        <p>No results found.</p>
+    {% else %}    
+        <ol>
+            {% for product in displayed_products %}
+                <li style='margin-bottom: 7px;'> <a href="{{ product.get_absolute_url }}">{{ product.title }}</a></li>
+            {% endfor %}
+        </ol>
+    {% endif %}   
+{% endblock cnt %}

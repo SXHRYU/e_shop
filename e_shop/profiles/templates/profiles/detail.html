@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block cnt %}
+    {% if user.is_superuser %}
+        <p><b>Admin version of a profile view</b></p>
+        <p>You are watching <b>{{ profile_username }}</b>'s account:</p>
+    {% endif %}
+
+    <ul>
+        <li>id:          {{ profile_id }}          </li>
+        <li>First Name:  {{ profile_first_name }}  </li>
+        <li>Last Name:   {{ profile_last_name }}   </li>
+        <li>Email:       {{ profile_email }}       </li>
+        <li>Username:    {{ profile_username }}    </li>
+        <li>Date Joined: {{ profile_date_joined }} </li>
+    </ul> 
+    <a href="{% url 'profiles-delete' profile_id %}"><button>Delete Profile</button></a>
+    <a href="{% url 'profiles-update' profile_id %}"><button>Update Profile</button></a>
+    <br> <br>
+
+    {# This block is exclusively for superusers and admins #}
+    {% if user.is_superuser %}
+        <div id="admin-info" style="margin-top: 7px; padding: 5px; border: 1px solid black; display: inline-block;">
+        <p>This button is exclusive to superusers and admins:</p>
+        <a href="{% url 'profiles-all' %}"><button>Go to All Profiles</button></a>
+        <p>Your workers also see next buttons:</p>
+            <a href="{% url 'products-add' %}"><button>Add Products</button></a>
+            <a href="{% url 'products-all' %}"><button>Go to All Products</button></a>
+        </div>
+    {% endif %}
+
+        {# This block is for workers. #}
+    {# Admins and superusers can see these buttons as well, and they also know that workers can see these buttons. #}
+    {# But workers don't (and maybe should not) know this (the second part of the above sentence) #}
+    {% if user.username in workers_username %}
+        <a href="{% url 'products-add' %}"><button>Add Products</button></a>
+        <a href="{% url 'products-all' %}"><button>Go to All Products</button></a>
+    {% endif %}
+{% endblock cnt %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        <h3>Are You sure you want to delete the following product?</h3>
+        <h3>This action is irreversible!</h3>
+            <p><b>Title:</p></b>
+            <p>{{ product_title }}</p>
+            <p><b>Description:</p></b>
+            <p>{{ product_description }}</p>
+            <input type="submit" value="Yes">
+    </form>
+    <br>
+    <a href="{% url 'products-detail' product_to_delete.id %}"><button>No</button></a>
+{% endblock cnt %}

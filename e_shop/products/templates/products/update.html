@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <h4>Edit product's description in database</h4>
+        
+    <form action="{% url 'products-update' product.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <input type="submit" value="Send To Server" style="margin-right: 15px">
+        <a href="{% url 'products-all' %}"><button>Cancel</button></a>
+    </form>
+    
+{% endblock cnt %}

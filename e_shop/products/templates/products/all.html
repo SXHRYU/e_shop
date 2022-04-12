@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <ul style='margin-top: 30px;'>
+        {% for product in all_products %}
+            <li style='margin-bottom: 7px;'> <a href="{{ product.get_absolute_url }}">id:{{ product.id}} - {{ product.title }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'products-filter' %}"><h3>Filter search</h3></a>
+    {% if user.username in workers_username or user.is_superuser %}
+        <a href="{% url 'products-add' %}"><button>Add Products</button></a>
+    {% endif %}
+{% endblock cnt %}

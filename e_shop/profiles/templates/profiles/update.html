@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block cnt %}
+    <form action="{% url 'profiles-update' profile_id %}" method="post">
+        {% csrf_token %}
+        <p>Your Username:</p>
+        <p>{{ form.username }}</p>
+        <p>Your first name:</p>
+        <p>{{ form.first_name }}</p>
+        <p>Your last name</p>
+        <p>{{ form.last_name }}</p>
+        <p>Your email</p>
+        <p>{{ form.email }}</p>
+        <input type="submit" value="Update">
+        <a href="../"><button>Cancel</button></a>
+    </form>
+{% endblock cnt %}
