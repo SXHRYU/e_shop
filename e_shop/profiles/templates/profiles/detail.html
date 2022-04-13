@@ -13,6 +13,7 @@
         <li>Username:    {{ profile_username }}    </li>
         <li>Date Joined: {{ profile_date_joined }} </li>
     </ul> 
+    <a href="{% url 'auth-logout' %}"><button>Logout</button></a>
     <a href="{% url 'profiles-delete' profile_id %}"><button>Delete Profile</button></a>
     <a href="{% url 'profiles-update' profile_id %}"><button>Update Profile</button></a>
     <br> <br>

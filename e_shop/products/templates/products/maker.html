@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block cnt %}
+    <h1>{{ maker.name }}</h1>
+    {% if maker.description %}
+        {{ maker.description }}
+    {% else %}
+        <p>Description will be soon!</p>
+    {% endif %}
+{% endblock cnt %}

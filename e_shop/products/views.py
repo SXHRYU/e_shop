@@ -1,8 +1,28 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect, Http404
 from .forms import ProductForm, SearchForm
-from .models import Product
+from .models import Product, Category, Maker
 from django.contrib.auth.models import Group
+
+
+def products_all_view(request):
+    # Getting the workers' username to check in template if we should add
+    # 'add product' button.
+    g = Group.objects.get(name='Workers')
+    workers_username = [
+        group_user.get('username') for group_user in g.user_set.values()
+    ]
+
+    all_products = Product.objects.all()
+    all_categories = Category.objects.all()
+    all_makers = Maker.objects.all()
+    context = {
+        'workers_username': workers_username,
+        'all_products': all_products,
+        'all_categories': all_categories,
+        'all_makers': all_makers,
+    }
+    return render(request, 'products/all.html', context)
 
 
 # The view used to add new products to the database.
@@ -41,22 +61,8 @@ def products_add_view(request):
     else:
         raise Http404("You aren't authorised to add stuff!")
 
-
-def products_all_view(request):
-    g = Group.objects.get(name='Workers')
-    workers_username = [
-        group_user.get('username') for group_user in g.user_set.values()
-    ]
-    all_products = Product.objects.all()
-    context = {
-        'all_products': all_products,
-        'workers_username': workers_username
-    }
-    return render(request, 'products/all.html', context)
-
-
-def products_detail_view(request, id):
-    product = get_object_or_404(Product, id=id)
+def products_detail_view(request, id_):
+    product = get_object_or_404(Product, id=id_)
 
     # We get the workers_username to check (inside of html) if the user in the
     # authorised group or not. If yes, he gets 2 extra buttons there.
@@ -104,8 +110,8 @@ def products_detail_view(request, id):
         return render(request, 'products/detail.html', context)
 
 
-def products_update_view(request, id):
-    product_to_update = get_object_or_404(Product, id=id)
+def products_update_view(request, id_):
+    product_to_update = get_object_or_404(Product, id=id_)
     
     g = Group.objects.get(name='Workers')
     u = request.user
@@ -225,14 +231,14 @@ def products_filter_view(request):
     return render(request, 'products/filter.html', context)
 
 
-def products_delete_view(request, id):
+def products_delete_view(request, id_):
     g = Group.objects.get(name='Workers')
     u = request.user
     workers_username = [
         group_user.get('username') for group_user in g.user_set.values()
     ]
     
-    product_to_delete = get_object_or_404(Product, id=id)
+    product_to_delete = get_object_or_404(Product, id=id_)
     if u.username in workers_username or u.is_superuser:
         if request.method == 'POST':
             product_to_delete.delete()
@@ -246,3 +252,11 @@ def products_delete_view(request, id):
             return render(request, 'products/delete.html', context)
     else:
         raise Http404("You aren't authorised to delete stuff!")
+
+
+def products_maker_view(request, id_):
+    maker = get_object_or_404(Maker, id=id_)
+    context = {
+        'maker': maker
+    }
+    return render(request, 'products/maker.html', context)

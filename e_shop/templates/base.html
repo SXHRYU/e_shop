@@ -7,19 +7,23 @@
     <meta name="viewport" content="width=device-width,
         initial-scale=1.0">
     <title>E-Shop</title>
-    <link rel="stylesheet" href={% static '/css/base.css' %}>
+    <link rel="stylesheet" href="{% static '/css/base.css' %}">
+    <link rel="stylesheet" href="{% static '/css/products-all.css' %}">
 </head>
 
 <body>
+    <a href="{% url 'home' %}">
+        <img id="main_logo" src="{% static '/img/main_logo.png' %}" alt="main_logo">
+    </a>
     {% include 'includes/navbar.html' %}
-    
-    <br>
-    <br>
-    {% block cnt %}
-    <p><b>Contents of {block cnt}</b></p> 
-    {% endblock cnt %}
-    <br>
-    
+    <div id="main-body-wrapper">
+        <br>
+        <br>
+        {% block cnt %}
+        <p><b>Contents of {block cnt}</b></p> 
+        {% endblock cnt %}
+        <br>
+    </div>
 </body>
 
 </html>

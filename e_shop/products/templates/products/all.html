@@ -1,13 +1,44 @@
 {% extends 'base.html' %}
 
 {% block cnt %}
-    <ul style='margin-top: 30px;'>
-        {% for product in all_products %}
-            <li style='margin-bottom: 7px;'> <a href="{{ product.get_absolute_url }}">id:{{ product.id}} - {{ product.title }}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'products-filter' %}"><h3>Filter search</h3></a>
-    {% if user.username in workers_username or user.is_superuser %}
-        <a href="{% url 'products-add' %}"><button>Add Products</button></a>
-    {% endif %}
+    <table>
+        <tr>
+            <th>All Products:</th>
+            <th>All Makers:</th>
+        </tr>
+        <tr>
+            <td>
+                <ul class="objects-list" style='margin-top: 30px;'>
+                    {% for product in all_products %}
+                        <li style='margin-bottom: 7px;'> <a href="{{ product.get_absolute_url }}">id:{{ product.id}} - {{ product.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+            {# !!! TO DO !!!  #}
+            {# This should be uncommented when I come up with an idea of 'category_detail_view', meaning a main page for category of items.  #}
+            {% comment %}
+                <td>
+                    <ul>
+                        {% for category in all_categories %}
+                            <li style='margin-bottom: 7px;'> <a href="{{ category.get_absolute_url }}">id:{{ product.id }} - {{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul> 
+                </td>
+            {% endcomment %}
+            <td>
+                <ul class="objects-list">
+                    {% for maker in all_makers %}
+                        <li style='margin-bottom: 7px;'> <a href="{{ maker.get_absolute_url }}">id:{{ maker.id }} - {{ maker.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <p id="technical-buttons">
+        <a href="{% url 'products-filter' %}">Filter search</a> <br>
+        {% if user.username in workers_username or user.is_superuser %}
+            <a href="{% url 'products-add' %}"><button style="margin-top: 20px;">Add Products</button></a>
+        {% endif %}
+    </p>
 {% endblock cnt %}

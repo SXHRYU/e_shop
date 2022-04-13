@@ -1,19 +1,49 @@
 {% extends 'base.html' %}
+{% load cart_extras %}
 {% block cnt %}
     {% if user.is_authenticated %}
         {% if cart_items %}
             <h3>You've put in your cart the following items:</h3>
-            <form action="." method="post">
+
+            <form action="." method="post" style="display: inline-block">
+                {# POST is used for removing items from the cart. We send POST request back to server to signal #}
+                {# that the item (or all items) in the 'request.POST' should be removed. #}
                 {% csrf_token %}
-                {% for item in cart_items %}
-                    <p>
-                        <a href="{{ item.get_absolute_url}}">{{ item }}</a>
-                        <button name="item_to_remove" value="{{ forloop.counter0 }}" style="margin-left: 10px;">Remove</button>
-                    </p>
-                {% endfor %}
+                <table>
+                    {# I used 3 'for' loops here because I don't know how to format HTML normally within one loop to render multiple rows. #}
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <ol>
+                                {% for item in cart_items %}
+                                    <li>
+                                        <a href="{{ item.get_absolute_url}}">{{ item }}</a>
+                                        <button name="item_to_remove" value="{{ forloop.counter0 }}" style="margin-left: 10px;">
+                                            Remove
+                                        </button>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+                        <td>
+                            {% for item in cart_items %}
+                                <p style="margin: 0 0 0 25px;">{{ item.price }} RUB</p>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Total:</th>
+                        <td>
+                            <p style="margin: 0 0 0 25px;">{{ cart_items|sum:'price' }} RUB</p>
+                        </td>
+                    </tr>
+                </table>
+                <br>
                 <button name="item_to_remove" value="all">Remove All</button>
             </form>
-
         {% else %}
             <h3>Your cart is empty!</h3>
         {% endif %}

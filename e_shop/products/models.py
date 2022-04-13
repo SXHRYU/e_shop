@@ -10,22 +10,31 @@ class Maker(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=322, blank=True)
 
-    def __str__(self) -> str:
-        return self.name
-
     class Meta:
         verbose_name_plural = "makers"
 
+    def get_absolute_url(self):
+        return reverse("products-maker", kwargs={"id_": self.id})
+
+    def __str__(self) -> str:
+        return self.name
+    
 
 # Category of Product, like TV, PC, laptop, phones, etc.
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name_plural = "categories"
+
     def __str__(self) -> str:
         return self.name
 
-    class Meta:
-        verbose_name_plural = "categories"
+    # !!! TO DO !!!
+    # Actually come up with some idea for main page for categories.
+    # def get_absolute_url(self):
+    #     return reverse("category_detail", kwargs={"pk": self.pk})
+    
 
 
 # The product itself.
@@ -60,12 +69,12 @@ class Product(models.Model):
         choices=Countries.country_codes, 
         default='US',
         blank=True)
-
+    
     class Meta:
         verbose_name_plural = "products"
 
     def get_absolute_url(self):
-        return reverse('products-detail', kwargs={'id' : self.id})
+        return reverse('products-detail', kwargs={'id_' : self.id})
 
     def __str__(self) -> str:
         return self.title
