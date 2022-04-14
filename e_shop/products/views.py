@@ -21,7 +21,9 @@ def products_all_view(request):
     # Condition to know how many products per page a person requested.
     if request.method == 'POST':
         try:
-            products_per_page = request.POST.get('number_of_objects_on_page')
+            products_per_page = int(request.POST.get('number_of_objects_on_page'))
+            if products_per_page <= 0:
+                raise ValueError
             paginator = Paginator(all_products, products_per_page, allow_empty_first_page=True)
             request.session['products_per_page'] = products_per_page
             request.session.modified = True

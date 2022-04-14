@@ -16,10 +16,16 @@ class CartMain(TemplateView):
             # 'request.session.modified = True' is mandatory when you
             # CHANGE or ADD the contents of the items in the 'request.session'
             # but not DELETE the 'request.session' itself
-            del request.session['cart_items']
-            request.session.modified = True
+            try:
+                del request.session['cart_items']
+                request.session.modified = True
 
-            del context['cart_items']
+                del context['cart_items']
+                # KeyError can be caught when user has already deleted items
+                # from the cart, pressed 'back' in URL bar and tried to delete
+                # items (one or all) again
+            except KeyError:
+                pass
         # This condition is just in case someone POST's to this page not by 
         # clicking any of the buttons on the page, but by some accident.
         elif request.POST.get('item_to_remove') is None:
@@ -31,11 +37,13 @@ class CartMain(TemplateView):
         # This condition deletes only specified product in the list.
         else:
             index_of_removed_item = int(request.POST.get('item_to_remove'))
+            try:
+                del request.session['cart_items'][index_of_removed_item]
+                request.session.modified = True
 
-            del request.session['cart_items'][index_of_removed_item]
-            request.session.modified = True
-
-            del context['cart_items'][index_of_removed_item]
+                del context['cart_items'][index_of_removed_item]
+            except KeyError:
+                pass
         return render(
             request,
             self.template_name,

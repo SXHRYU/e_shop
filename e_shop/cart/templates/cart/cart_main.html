@@ -21,9 +21,9 @@
                                 {% for item in cart_items %}
                                     <li>
                                         <a href="{{ item.get_absolute_url}}">{{ item }}</a>
-                                        <button name="item_to_remove" value="{{ forloop.counter0 }}" style="margin-left: 10px;">
+                                        <button name="item_to_remove" value="{{ forloop.counter0 }}" style="margin-left: 10px; float: right;">
                                             Remove
-                                        </button>
+                                        </button> <br style="content: ''; display: block; margin-bottom: 10px;"> 
                                     </li>
                                 {% endfor %}
                             </ol>
