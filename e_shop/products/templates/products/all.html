@@ -7,12 +7,49 @@
             <th>All Makers:</th>
         </tr>
         <tr>
-            <td>
-                <ul class="objects-list" style='margin-top: 30px;'>
+            <td style="border: 2px solid black; min-width: 350px; text-align: center; height:300px;">
+                {# Simple iterating method to display objects. #}
+                {# Below this code is a 'pagination' variant which is more compact when there are a lot of products #}
+                {% comment %} <ul class="objects-list" style='margin-top: 30px;'>
                     {% for product in all_products %}
                         <li style='margin-bottom: 7px;'> <a href="{{ product.get_absolute_url }}">id:{{ product.id}} - {{ product.title }}</a></li>
                     {% endfor %}
-                </ul>
+                </ul> {% endcomment %}
+
+                {% for item in page_object %}
+                {# Each "object" is a Product model object. #}
+                    <p>
+                        id:{{ item.id }} - <a href="{{ item.get_absolute_url }}">{{ item.title|upper }}</a> <br>
+                    </p>
+                {% endfor %}
+                <br style="content: ''; display: block; margin-bottom: 55px;"> 
+                
+                
+                <form action="." method="POST">
+                    {% csrf_token %}
+                    <label for="number_of_objects_on_page">Items/page</label>
+                    <input type="number" name="number_of_objects_on_page">
+                    <input type="submit" value="Update">
+                </form>
+                <br>
+
+                <div class="pagination" style="padding: 2% 0">
+                    {# Check if we're on first page of the list. If no, show 'First' and 'Previous' options. #}
+                    {% if page_object.has_previous %}
+                        <a href="?page=1">&laquo; First</a>
+                        <a href="?page={{ page_object.previous_page_number }}">Previous</a>
+                    {% endif %}
+            
+                    <p style="display: inline">
+                        Page {{ page_object.number }} of {{ page_object.paginator.num_pages }}
+                    </p>
+            
+                    {# Check if we're on last page of the list. If no, show 'Next' and 'Last' options. #}
+                    {% if page_object.has_next %}
+                        <a href="?page={{ page_object.next_page_number }}">Next</a>
+                        <a href="?page={{ page_object.paginator.num_pages }}">Last &raquo;</a>
+                    {% endif %}
+                </div>
             </td>
             {# !!! TO DO !!!  #}
             {# This should be uncommented when I come up with an idea of 'category_detail_view', meaning a main page for category of items.  #}

@@ -1,8 +1,9 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponseRedirect, Http404
+from django.core.paginator import Paginator
+from django.contrib.auth.models import Group
 from .forms import ProductForm, SearchForm
 from .models import Product, Category, Maker
-from django.contrib.auth.models import Group
 
 
 def products_all_view(request):
@@ -13,14 +14,40 @@ def products_all_view(request):
         group_user.get('username') for group_user in g.user_set.values()
     ]
 
-    all_products = Product.objects.all()
+    all_products = Product.objects.order_by('id')
     all_categories = Category.objects.all()
     all_makers = Maker.objects.all()
+    
+    # Condition to know how many products per page a person requested.
+    if request.method == 'POST':
+        try:
+            products_per_page = request.POST.get('number_of_objects_on_page')
+            paginator = Paginator(all_products, products_per_page, allow_empty_first_page=True)
+            request.session['products_per_page'] = products_per_page
+            request.session.modified = True
+        except ValueError:
+            paginator = Paginator(all_products, 2, allow_empty_first_page=True)
+    
+    # If user didn't change the num. of objects to display on page, display 2.
+    # else display the number requested and saved in 'request.session'
+    try:
+        paginator = Paginator(
+            all_products,
+            request.session['products_per_page'],
+            allow_empty_first_page=True
+        )
+    except KeyError:
+        paginator = Paginator(all_products, 2, allow_empty_first_page=True)
+
+    # page that is requested by the user
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number)
     context = {
         'workers_username': workers_username,
         'all_products': all_products,
         'all_categories': all_categories,
         'all_makers': all_makers,
+        'page_object': page_object
     }
     return render(request, 'products/all.html', context)
 
@@ -50,7 +77,7 @@ def products_add_view(request):
             # If the data is not full in the form - raises an error.
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect('/login/')
+                return redirect('products-all')
         else:
             form = ProductForm()
 
